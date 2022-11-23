@@ -1,0 +1,55 @@
+site_name: Math Tutor
+
+theme:
+  name: active-handout-theme
+  locale: pt_BR
+
+docs_dir: content
+site_dir: docs
+
+site_url: https://insper-education.github.io/active-handout/
+repo_name: "Active Handout"
+repo_url: https://github.com/insper-education/active-handout
+edit_uri: edit/main/content/
+
+extra_css:
+  - css/mathlive-static.css
+  - css/main.css
+
+extra_javascript:
+  - js/main.js
+
+markdown_extensions:
+  - active-handout-plugins:
+      locale: pt_BR
+  - footnotes
+  - markdown.extensions.admonition
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.magiclink
+  - pymdownx.critic:
+      mode: view
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - attr_list
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      base_path: code
+      check_paths: true
+
+nav:
+  - Home: index.md

@@ -1,0 +1,8 @@
+.equation-container, math-field {
+  justify-content: center;
+  margin: .5em 0;
+  padding: .1em .2em;
+  display: flex;
+}
+
+/*# sourceMappingURL=main.css.map */

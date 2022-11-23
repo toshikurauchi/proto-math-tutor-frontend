@@ -1,0 +1,23 @@
+{
+  "name": "proto-math-tutor-frontend",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "targets": {
+    "javascript": {
+      "source": "./src/js/main.js",
+      "distDir": "./content/js"
+    },
+    "css": {
+      "source": "./src/scss/main.scss",
+      "distDir": "./content/css"
+    }
+  },
+  "scripts": {
+    "start": "parcel watch",
+    "build": "parcel build"
+  },
+  "dependencies": {
+    "@parcel/transformer-sass": "^2.8.0",
+    "mathlive": "^0.85.1",
+    "parcel": "^2.8.0"
+  }
+}
