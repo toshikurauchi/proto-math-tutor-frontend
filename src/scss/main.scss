@@ -1,7 +1,122 @@
-.equation-container,
-math-field {
+$border-radius: 0.5rem;
+
+:root {
+  --equation-background: hsl(207, 71%, 93%);
+  --equation-disabled-background: hsl(0, 0%, 79%);
+}
+
+#equation-history {
   display: flex;
-  justify-content: center;
-  padding: 0.1em 0.2em;
-  margin: 0.5em 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+math-field {
+  background-color: var(--clr-background);
+  padding: 0.5em 1em;
+  margin: 1em 0 1.5em;
+}
+
+.equation-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em 1.5em;
+
+  background-color: var(--equation-background);
+  border-radius: $border-radius;
+
+  transition: all 0.2s;
+
+  &.equation-disabled {
+    --equation-background: var(--equation-disabled-background);
+
+    cursor: pointer;
+  }
+
+  &.collapsed {
+    padding: 1em;
+    border-radius: 100%;
+    margin: -0.2em 0;
+
+    > * {
+      display: none;
+    }
+  }
+}
+
+.equation-link {
+  display: flex;
+  justify-content: space-between;
+
+  height: 2rem;
+  width: 3.5 * $border-radius;
+  background: var(--equation-background);
+
+  &.from-fail-to-fail {
+    background: var(--equation-disabled-background);
+  }
+  &.from-success-to-fail {
+    background: linear-gradient(
+      var(--equation-background),
+      var(--equation-disabled-background)
+    );
+  }
+  &.from-fail-to-success {
+    background: linear-gradient(
+      var(--equation-disabled-background),
+      var(--equation-background)
+    );
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    width: $border-radius;
+    height: 100%;
+    background-color: var(--clr-background);
+  }
+
+  &::after {
+    border-top-left-radius: $border-radius;
+    border-bottom-left-radius: $border-radius;
+  }
+
+  &::before {
+    border-top-right-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
+  }
+}
+
+.test-equation-btn {
+  $bg: #2f3a83;
+
+  border: none;
+  border-radius: 0.5 * $border-radius;
+  cursor: pointer;
+
+  color: white;
+  background-color: $bg;
+  padding: 0.5em 1em;
+
+  &:hover {
+    background-color: lighten($bg, 8%);
+    transition: all 0.3s ease;
+  }
+
+  &:active {
+    background: lighten($bg, 25%);
+  }
+}
+
+.equation-feedback {
+  margin-top: 0.5em;
+
+  &.equation-ok {
+    color: hsl(120, 55%, 43%);
+  }
+
+  &.equation-fail {
+    color: hsl(0, 100%, 61%);
+  }
 }

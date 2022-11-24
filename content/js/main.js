@@ -532,21 +532,108 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"lFcwH":[function(require,module,exports) {
-var _mathlive = require("mathlive");
+var _equationNode = require("./equation-node");
 function onLoad() {
     const history = document.getElementById("equation-history");
-    const container = document.createElement("div");
-    container.classList.add("equation-container");
-    container.innerHTML = (0, _mathlive.convertLatexToMarkup)(question);
-    history.appendChild(container);
-    const mfe = new (0, _mathlive.MathfieldElement)();
-    mfe.value = question;
-    history.appendChild(mfe);
+    (0, _equationNode.createEquationNode)(history, question);
+    (0, _equationNode.createEditableNode)(history, question);
 }
 if (document.readyState !== "loading") onLoad();
 else document.addEventListener("DOMContentLoaded", onLoad);
 
-},{"mathlive":"6GL7y"}],"6GL7y":[function(require,module,exports) {
+},{"./equation-node":"l1JBt"}],"l1JBt":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "createEquationNode", ()=>createEquationNode);
+parcelHelpers.export(exports, "createEditableNode", ()=>createEditableNode);
+var _mathlive = require("mathlive");
+function createEquationNode(history, equation, success, feedback) {
+    if (success === undefined) success = true;
+    const prevNodes = history.getElementsByClassName("equation-node");
+    if (prevNodes.length > 0) {
+        const prevOk = !prevNodes[prevNodes.length - 1].classList.contains("equation-disabled");
+        createNodeLink(history, prevOk, success);
+    }
+    const node = document.createElement("div");
+    node.classList.add("equation-node");
+    if (!success) disableNode(node);
+    if (equation) node.innerHTML = (0, _mathlive.convertLatexToMarkup)(equation);
+    history.appendChild(node);
+    addFeedbackToNode(feedback, node, success);
+    return node;
+}
+function createEditableNode(history, prevAnswer) {
+    const node = createEquationNode(history);
+    const label = document.createElement("span");
+    label.textContent = "Modifique o campo abaixo com o pr\xf3ximo passo:";
+    node.appendChild(label);
+    const mfe = new (0, _mathlive.MathfieldElement)({
+        virtualKeyboardMode: "manual"
+    });
+    mfe.value = prevAnswer;
+    node.appendChild(mfe);
+    const testButton = document.createElement("button");
+    testButton.classList.add("test-equation-btn");
+    testButton.textContent = "Testar";
+    testButton.addEventListener("click", ()=>{
+        const answer = mfe.value;
+        const success = false; // TODO: THIS SHOULD BE COMPUTED SOMEWHERE ELSE;
+        node.innerHTML = (0, _mathlive.convertLatexToMarkup)(answer);
+        addFeedbackToNode("Resolva primeiro as pot\xeancias", node, success);
+        if (!success) disableNode(node);
+        fixPrevLink(node, success);
+        const editableNode = createEditableNode(history, answer);
+        setTimeout(()=>{
+            editableNode.scrollIntoView({
+                behavior: "smooth"
+            });
+        }, 0);
+    });
+    node.appendChild(testButton);
+    return node;
+}
+function createNodeLink(history, prevOk, currOk) {
+    const link = document.createElement("div");
+    link.classList.add("equation-link");
+    addLinkTransitionClass(link, prevOk, currOk);
+    history.appendChild(link);
+}
+function addLinkTransitionClass(link, prevOk, currOk) {
+    const transitionClassName = `from-${prevOk ? "success" : "fail"}-to-${currOk ? "success" : "fail"}`;
+    link.classList.add(transitionClassName);
+}
+function addFeedbackToNode(feedback, node, success) {
+    if (feedback) {
+        const feedbackNode = document.createElement("span");
+        feedbackNode.textContent = feedback;
+        feedbackNode.classList.add("equation-feedback");
+        if (success) feedbackNode.classList.add("equation-ok");
+        else feedbackNode.classList.add("equation-fail");
+        node.appendChild(feedbackNode);
+    }
+}
+function disableNode(node) {
+    node.classList.add("equation-disabled");
+    node.classList.add("collapsed");
+    node.addEventListener("click", ()=>{
+        node.classList.toggle("collapsed");
+    });
+}
+function fixPrevLink(node, currOk) {
+    const link = node.previousSibling;
+    const prevNode = link.previousSibling;
+    const prevOk = !prevNode.classList.contains("equation-disabled");
+    if (!prevOk && !prevNode.classList.contains("collapsed")) prevNode.classList.add("collapsed");
+    [
+        "from-success-to-success",
+        "from-success-to-fail",
+        "from-fail-to-success",
+        "from-fail-to-fail"
+    ].map((className)=>link.classList.remove(className));
+    addLinkTransitionClass(link, prevOk, currOk);
+}
+
+},{"mathlive":"6GL7y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU"}],"6GL7y":[function(require,module,exports) {
 /** MathLive 0.85.1 */ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ComputeEngine", ()=>ld);

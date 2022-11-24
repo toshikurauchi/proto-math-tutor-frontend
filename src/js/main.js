@@ -1,15 +1,9 @@
-import { MathfieldElement, convertLatexToMarkup } from "mathlive";
+import { createEditableNode, createEquationNode } from "./equation-node";
 
 function onLoad() {
   const history = document.getElementById("equation-history");
-  const container = document.createElement("div");
-  container.classList.add("equation-container");
-  container.innerHTML = convertLatexToMarkup(question);
-  history.appendChild(container);
-
-  const mfe = new MathfieldElement();
-  mfe.value = question;
-  history.appendChild(mfe);
+  createEquationNode(history, question);
+  createEditableNode(history, question);
 }
 
 if (document.readyState !== "loading") {

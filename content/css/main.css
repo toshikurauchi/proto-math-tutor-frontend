@@ -1,8 +1,110 @@
-.equation-container, math-field {
-  justify-content: center;
-  margin: .5em 0;
-  padding: .1em .2em;
+:root {
+  --equation-background: #e0eefa;
+  --equation-disabled-background: #c9c9c9;
+}
+
+#equation-history {
+  flex-direction: column;
+  align-items: center;
   display: flex;
+}
+
+math-field {
+  background-color: var(--clr-background);
+  margin: 1em 0 1.5em;
+  padding: .5em 1em;
+}
+
+.equation-node {
+  background-color: var(--equation-background);
+  border-radius: .5rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em 1.5em;
+  transition: all .2s;
+  display: flex;
+}
+
+.equation-node.equation-disabled {
+  --equation-background: var(--equation-disabled-background);
+  cursor: pointer;
+}
+
+.equation-node.collapsed {
+  border-radius: 100%;
+  margin: -.2em 0;
+  padding: 1em;
+}
+
+.equation-node.collapsed > * {
+  display: none;
+}
+
+.equation-link {
+  height: 2rem;
+  width: 1.75rem;
+  background: var(--equation-background);
+  justify-content: space-between;
+  display: flex;
+}
+
+.equation-link.from-fail-to-fail {
+  background: var(--equation-disabled-background);
+}
+
+.equation-link.from-success-to-fail {
+  background: linear-gradient(var(--equation-background), var(--equation-disabled-background));
+}
+
+.equation-link.from-fail-to-success {
+  background: linear-gradient(var(--equation-disabled-background), var(--equation-background));
+}
+
+.equation-link:before, .equation-link:after {
+  content: "";
+  width: .5rem;
+  height: 100%;
+  background-color: var(--clr-background);
+}
+
+.equation-link:after {
+  border-top-left-radius: .5rem;
+  border-bottom-left-radius: .5rem;
+}
+
+.equation-link:before {
+  border-top-right-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+}
+
+.test-equation-btn {
+  cursor: pointer;
+  color: #fff;
+  background-color: #2f3a83;
+  border: none;
+  border-radius: .25rem;
+  padding: .5em 1em;
+}
+
+.test-equation-btn:hover {
+  background-color: #3a47a1;
+  transition: all .3s;
+}
+
+.test-equation-btn:active {
+  background: #6875c9;
+}
+
+.equation-feedback {
+  margin-top: .5em;
+}
+
+.equation-feedback.equation-ok {
+  color: #31aa31;
+}
+
+.equation-feedback.equation-fail {
+  color: #ff3838;
 }
 
 /*# sourceMappingURL=main.css.map */
