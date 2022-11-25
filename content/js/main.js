@@ -547,61 +547,130 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createEquationNode", ()=>createEquationNode);
 parcelHelpers.export(exports, "createEditableNode", ()=>createEditableNode);
 var _mathlive = require("mathlive");
-function createEquationNode(history, equation, feedback) {
-    createNodeLink(history);
+function createEquationNode(history, equation) {
+    addNodeLink(history);
     const node = document.createElement("div");
     node.classList.add("equation-node");
-    if (equation) node.innerHTML = (0, _mathlive.convertLatexToMarkup)(equation);
+    const content = document.createElement("div");
+    content.classList.add("equation-content");
+    if (equation) content.innerHTML = (0, _mathlive.convertLatexToMarkup)(equation);
+    node.appendChild(content);
     history.appendChild(node);
-    addFeedbackToNode(feedback, node);
-    return node;
+    return [
+        node,
+        content
+    ];
 }
 function createEditableNode(history, prevAnswer) {
-    const node = createEquationNode(history);
+    const [node, contentNode] = createEquationNode(history);
     const label = document.createElement("span");
     label.textContent = "Modifique o campo abaixo com o pr\xf3ximo passo:";
-    node.appendChild(label);
+    contentNode.appendChild(label);
     const mfe = new (0, _mathlive.MathfieldElement)({
         virtualKeyboardMode: "manual"
     });
     mfe.value = prevAnswer;
-    node.appendChild(mfe);
+    contentNode.appendChild(mfe);
+    const feedbackNode = addFeedbackElement(contentNode);
+    let errorCounter;
+    let errorList;
     const testButton = document.createElement("button");
     testButton.classList.add("test-equation-btn");
     testButton.textContent = "Testar";
     testButton.addEventListener("click", ()=>{
         const answer = mfe.value;
-        const success = false; // TODO: THIS SHOULD BE COMPUTED SOMEWHERE ELSE;
-        node.innerHTML = (0, _mathlive.convertLatexToMarkup)(answer);
-        addFeedbackToNode("Resolva primeiro as pot\xeancias", node);
-        const editableNode = createEditableNode(history, answer);
-        // Postpone scrollIntoView so the node has time to be initialized
-        setTimeout(()=>{
-            editableNode.scrollIntoView({
-                behavior: "smooth"
-            });
-        }, 0);
+        const success = checkAnswer(answer);
+        if (success) {
+            contentNode.innerHTML = (0, _mathlive.convertLatexToMarkup)(answer);
+            const editableNode = createEditableNode(history, answer);
+            // Postpone scrollIntoView so the node has time to be initialized
+            setTimeout(()=>{
+                editableNode.scrollIntoView({
+                    behavior: "smooth"
+                });
+            }, 0);
+        } else {
+            if (!errorCounter) [errorCounter, errorList] = addErrorCount(node);
+            errorCounter.textContent = parseInt(errorCounter.textContent) + 1;
+            const newFeedback = randomFeedback();
+            feedbackNode.textContent = newFeedback;
+            addErrorFeedback(errorList, answer, newFeedback);
+        }
     });
-    node.appendChild(testButton);
+    contentNode.appendChild(testButton);
     mfe.addEventListener("input", ()=>{
         prevAnswer;
     });
     return node;
 }
-function createNodeLink(history) {
-    const prevNodes = history.getElementsByClassName("equation-node");
+function addNodeLink(parent) {
+    const prevNodes = parent.getElementsByClassName("equation-node");
     if (prevNodes.length === 0) return;
     const link = document.createElement("div");
     link.classList.add("equation-link");
-    history.appendChild(link);
+    parent.appendChild(link);
 }
-function addFeedbackToNode(feedback, node) {
-    if (feedback) {
-        const feedbackNode = document.createElement("span");
-        feedbackNode.textContent = feedback;
-        feedbackNode.classList.add("equation-feedback");
-        node.appendChild(feedbackNode);
-    }
+function addFeedbackElement(parent) {
+    const feedbackNode = document.createElement("span");
+    feedbackNode.classList.add("equation-feedback");
+    parent.appendChild(feedbackNode);
+    return feedbackNode;
+}
+function addErrorCount(parent) {
+    const [dialog, errorList] = addErrorDialog(parent);
+    const counter = document.createElement("button");
+    counter.classList.add("counter-btn");
+    counter.textContent = 0;
+    counter.addEventListener("click", ()=>{
+        if (typeof dialog.showModal === "function") dialog.showModal();
+    });
+    parent.appendChild(counter);
+    return [
+        counter,
+        errorList
+    ];
+}
+function addErrorDialog(parent) {
+    const dialog = document.createElement("dialog");
+    dialog.classList.add("error-dialog");
+    const errorList = document.createElement("ul");
+    errorList.classList.add("error-list");
+    dialog.appendChild(errorList);
+    const closeButton = document.createElement("button");
+    closeButton.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+    closeButton.addEventListener("click", ()=>{
+        dialog.close();
+    });
+    dialog.appendChild(closeButton);
+    parent.appendChild(dialog);
+    return [
+        dialog,
+        errorList
+    ];
+}
+function addErrorFeedback(errorList, answer, feedback) {
+    const error = document.createElement("li");
+    const answerElement = document.createElement("span");
+    answerElement.classList.add("error-list-answer");
+    answerElement.innerHTML = (0, _mathlive.convertLatexToMarkup)(answer);
+    error.appendChild(answerElement);
+    const feedbackElement = document.createElement("span");
+    feedbackElement.classList.add("error-list-feedback");
+    feedbackElement.textContent = feedback;
+    error.appendChild(feedbackElement);
+    errorList.appendChild(error);
+}
+function checkAnswer(currentAnswer) {
+    return false;
+}
+function randomFeedback() {
+    const feedbacks = [
+        "Resolva primeiro as pot\xeancias",
+        "Verifique os sinais",
+        "Resolva primeiro os par\xeanteses"
+    ];
+    const randomIdx = Math.floor(Math.random() * feedbacks.length);
+    return feedbacks[randomIdx];
 }
 
 },{"mathlive":"6GL7y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU"}],"6GL7y":[function(require,module,exports) {

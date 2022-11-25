@@ -10,7 +10,7 @@
 
 math-field {
   background-color: var(--clr-background);
-  margin: 1em 0 1.5em;
+  margin: 1em 0 0;
   padding: .5em 1em;
 }
 
@@ -19,6 +19,10 @@ math-field::part(virtual-keyboard-toggle) {
 }
 
 .equation-node {
+  position: relative;
+}
+
+.equation-content {
   background-color: var(--equation-background);
   border-radius: .5rem;
   flex-direction: column;
@@ -53,6 +57,30 @@ math-field::part(virtual-keyboard-toggle) {
   border-bottom-right-radius: .5rem;
 }
 
+.counter-btn {
+  border: 3px solid var(--clr-background);
+  cursor: pointer;
+  color: #fff;
+  width: 2rem;
+  height: 2rem;
+  background-color: #db4343;
+  border-radius: 50%;
+  font-size: .8rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.counter-btn:hover {
+  background-color: #e26565;
+  transition: all .3s;
+}
+
+.counter-btn:active {
+  background: #efaeae;
+}
+
 .test-equation-btn {
   cursor: pointer;
   color: #fff;
@@ -72,7 +100,49 @@ math-field::part(virtual-keyboard-toggle) {
 }
 
 .equation-feedback {
-  margin-top: .5em;
+  color: #db4343;
+  margin-bottom: 1.5em;
+  font-size: 1rem;
+}
+
+.error-dialog {
+  max-height: 90%;
+  border: none;
+  border-radius: .5rem;
+  margin: auto;
+  padding: 2rem;
+}
+
+.error-dialog::backdrop {
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+ul.error-list {
+  padding-left: 0;
+}
+
+ul.error-list li {
+  flex-direction: column;
+  display: flex;
+}
+
+ul.error-list li:before {
+  display: none;
+}
+
+ul.error-list li ~ li:before {
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: #dcdada;
+  margin-bottom: 1em;
+  display: block;
+  position: static;
+}
+
+.error-list-feedback {
+  color: #db4343;
 }
 
 /*# sourceMappingURL=main.css.map */

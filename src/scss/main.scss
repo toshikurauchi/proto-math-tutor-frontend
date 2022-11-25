@@ -1,4 +1,5 @@
 $border-radius: 0.5rem;
+$clr-error: hsl(0, 68%, 56%);
 
 :root {
   --equation-background: hsl(207, 71%, 93%);
@@ -13,7 +14,7 @@ $border-radius: 0.5rem;
 math-field {
   background-color: var(--clr-background);
   padding: 0.5em 1em;
-  margin: 1em 0 1.5em;
+  margin: 1em 0 0;
 
   &::part(virtual-keyboard-toggle) {
     margin-left: 1.5em;
@@ -21,6 +22,10 @@ math-field {
 }
 
 .equation-node {
+  position: relative;
+}
+
+.equation-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,6 +64,35 @@ math-field {
   }
 }
 
+.counter-btn {
+  $bg: $clr-error;
+
+  border: 3px solid var(--clr-background);
+  border-radius: 50%;
+  cursor: pointer;
+
+  color: white;
+  background-color: $bg;
+
+  font-size: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+
+  &:hover {
+    background-color: lighten($bg, 8%);
+    transition: all 0.3s ease;
+  }
+
+  &:active {
+    background: lighten($bg, 25%);
+  }
+}
+
 .test-equation-btn {
   $bg: #2f3a83;
 
@@ -81,5 +115,46 @@ math-field {
 }
 
 .equation-feedback {
-  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+  font-size: 1rem;
+  color: $clr-error;
+}
+
+.error-dialog {
+  border: none;
+  border-radius: $border-radius;
+  margin: auto;
+  padding: 2rem;
+  max-height: 90%;
+
+  &::backdrop {
+    backdrop-filter: blur(2px);
+  }
+}
+
+ul.error-list {
+  padding-left: 0;
+
+  li {
+    display: flex;
+    flex-direction: column;
+
+    &::before {
+      display: none;
+    }
+
+    ~ li::before {
+      position: static;
+      display: block;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background-color: hsl(0, 3%, 86%);
+      margin-bottom: 1em;
+    }
+  }
+}
+
+.error-list-feedback {
+  color: $clr-error;
 }
