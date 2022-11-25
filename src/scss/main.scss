@@ -2,7 +2,6 @@ $border-radius: 0.5rem;
 
 :root {
   --equation-background: hsl(207, 71%, 93%);
-  --equation-disabled-background: hsl(0, 0%, 79%);
 }
 
 #equation-history {
@@ -15,6 +14,10 @@ math-field {
   background-color: var(--clr-background);
   padding: 0.5em 1em;
   margin: 1em 0 1.5em;
+
+  &::part(virtual-keyboard-toggle) {
+    margin-left: 1.5em;
+  }
 }
 
 .equation-node {
@@ -27,22 +30,6 @@ math-field {
   border-radius: $border-radius;
 
   transition: all 0.2s;
-
-  &.equation-disabled {
-    --equation-background: var(--equation-disabled-background);
-
-    cursor: pointer;
-  }
-
-  &.collapsed {
-    padding: 1em;
-    border-radius: 100%;
-    margin: -0.2em 0;
-
-    > * {
-      display: none;
-    }
-  }
 }
 
 .equation-link {
@@ -52,22 +39,6 @@ math-field {
   height: 2rem;
   width: 3.5 * $border-radius;
   background: var(--equation-background);
-
-  &.from-fail-to-fail {
-    background: var(--equation-disabled-background);
-  }
-  &.from-success-to-fail {
-    background: linear-gradient(
-      var(--equation-background),
-      var(--equation-disabled-background)
-    );
-  }
-  &.from-fail-to-success {
-    background: linear-gradient(
-      var(--equation-disabled-background),
-      var(--equation-background)
-    );
-  }
 
   &::before,
   &::after {
@@ -111,12 +82,4 @@ math-field {
 
 .equation-feedback {
   margin-top: 0.5em;
-
-  &.equation-ok {
-    color: hsl(120, 55%, 43%);
-  }
-
-  &.equation-fail {
-    color: hsl(0, 100%, 61%);
-  }
 }

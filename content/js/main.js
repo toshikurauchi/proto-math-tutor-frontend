@@ -547,19 +547,13 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createEquationNode", ()=>createEquationNode);
 parcelHelpers.export(exports, "createEditableNode", ()=>createEditableNode);
 var _mathlive = require("mathlive");
-function createEquationNode(history, equation, success, feedback) {
-    if (success === undefined) success = true;
-    const prevNodes = history.getElementsByClassName("equation-node");
-    if (prevNodes.length > 0) {
-        const prevOk = !prevNodes[prevNodes.length - 1].classList.contains("equation-disabled");
-        createNodeLink(history, prevOk, success);
-    }
+function createEquationNode(history, equation, feedback) {
+    createNodeLink(history);
     const node = document.createElement("div");
     node.classList.add("equation-node");
-    if (!success) disableNode(node);
     if (equation) node.innerHTML = (0, _mathlive.convertLatexToMarkup)(equation);
     history.appendChild(node);
-    addFeedbackToNode(feedback, node, success);
+    addFeedbackToNode(feedback, node);
     return node;
 }
 function createEditableNode(history, prevAnswer) {
@@ -579,10 +573,9 @@ function createEditableNode(history, prevAnswer) {
         const answer = mfe.value;
         const success = false; // TODO: THIS SHOULD BE COMPUTED SOMEWHERE ELSE;
         node.innerHTML = (0, _mathlive.convertLatexToMarkup)(answer);
-        addFeedbackToNode("Resolva primeiro as pot\xeancias", node, success);
-        if (!success) disableNode(node);
-        fixPrevLink(node, success);
+        addFeedbackToNode("Resolva primeiro as pot\xeancias", node);
         const editableNode = createEditableNode(history, answer);
+        // Postpone scrollIntoView so the node has time to be initialized
         setTimeout(()=>{
             editableNode.scrollIntoView({
                 behavior: "smooth"
@@ -590,47 +583,25 @@ function createEditableNode(history, prevAnswer) {
         }, 0);
     });
     node.appendChild(testButton);
+    mfe.addEventListener("input", ()=>{
+        prevAnswer;
+    });
     return node;
 }
-function createNodeLink(history, prevOk, currOk) {
+function createNodeLink(history) {
+    const prevNodes = history.getElementsByClassName("equation-node");
+    if (prevNodes.length === 0) return;
     const link = document.createElement("div");
     link.classList.add("equation-link");
-    addLinkTransitionClass(link, prevOk, currOk);
     history.appendChild(link);
 }
-function addLinkTransitionClass(link, prevOk, currOk) {
-    const transitionClassName = `from-${prevOk ? "success" : "fail"}-to-${currOk ? "success" : "fail"}`;
-    link.classList.add(transitionClassName);
-}
-function addFeedbackToNode(feedback, node, success) {
+function addFeedbackToNode(feedback, node) {
     if (feedback) {
         const feedbackNode = document.createElement("span");
         feedbackNode.textContent = feedback;
         feedbackNode.classList.add("equation-feedback");
-        if (success) feedbackNode.classList.add("equation-ok");
-        else feedbackNode.classList.add("equation-fail");
         node.appendChild(feedbackNode);
     }
-}
-function disableNode(node) {
-    node.classList.add("equation-disabled");
-    node.classList.add("collapsed");
-    node.addEventListener("click", ()=>{
-        node.classList.toggle("collapsed");
-    });
-}
-function fixPrevLink(node, currOk) {
-    const link = node.previousSibling;
-    const prevNode = link.previousSibling;
-    const prevOk = !prevNode.classList.contains("equation-disabled");
-    if (!prevOk && !prevNode.classList.contains("collapsed")) prevNode.classList.add("collapsed");
-    [
-        "from-success-to-success",
-        "from-success-to-fail",
-        "from-fail-to-success",
-        "from-fail-to-fail"
-    ].map((className)=>link.classList.remove(className));
-    addLinkTransitionClass(link, prevOk, currOk);
 }
 
 },{"mathlive":"6GL7y","@parcel/transformer-js/src/esmodule-helpers.js":"5oERU"}],"6GL7y":[function(require,module,exports) {

@@ -1,6 +1,5 @@
 :root {
   --equation-background: #e0eefa;
-  --equation-disabled-background: #c9c9c9;
 }
 
 #equation-history {
@@ -15,6 +14,10 @@ math-field {
   padding: .5em 1em;
 }
 
+math-field::part(virtual-keyboard-toggle) {
+  margin-left: 1.5em;
+}
+
 .equation-node {
   background-color: var(--equation-background);
   border-radius: .5rem;
@@ -25,39 +28,12 @@ math-field {
   display: flex;
 }
 
-.equation-node.equation-disabled {
-  --equation-background: var(--equation-disabled-background);
-  cursor: pointer;
-}
-
-.equation-node.collapsed {
-  border-radius: 100%;
-  margin: -.2em 0;
-  padding: 1em;
-}
-
-.equation-node.collapsed > * {
-  display: none;
-}
-
 .equation-link {
   height: 2rem;
   width: 1.75rem;
   background: var(--equation-background);
   justify-content: space-between;
   display: flex;
-}
-
-.equation-link.from-fail-to-fail {
-  background: var(--equation-disabled-background);
-}
-
-.equation-link.from-success-to-fail {
-  background: linear-gradient(var(--equation-background), var(--equation-disabled-background));
-}
-
-.equation-link.from-fail-to-success {
-  background: linear-gradient(var(--equation-disabled-background), var(--equation-background));
 }
 
 .equation-link:before, .equation-link:after {
@@ -97,14 +73,6 @@ math-field {
 
 .equation-feedback {
   margin-top: .5em;
-}
-
-.equation-feedback.equation-ok {
-  color: #31aa31;
-}
-
-.equation-feedback.equation-fail {
-  color: #ff3838;
 }
 
 /*# sourceMappingURL=main.css.map */
