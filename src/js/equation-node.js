@@ -36,6 +36,7 @@ export function createEditableNode(history, prevAnswer) {
   const testButton = document.createElement("button");
   testButton.classList.add("test-equation-btn");
   testButton.textContent = "Testar";
+  testButton.disabled = true;
   testButton.addEventListener("click", () => {
     const answer = mfe.value;
     const success = checkAnswer(answer);
@@ -59,6 +60,10 @@ export function createEditableNode(history, prevAnswer) {
     }
   });
   contentNode.appendChild(testButton);
+
+  mfe.addEventListener("input", () => {
+    testButton.disabled = mfe.value === prevAnswer;
+  });
 
   mfe.addEventListener("input", () => {
     prevAnswer;
@@ -144,7 +149,6 @@ function addErrorFeedback(errorList, answer, feedback) {
 }
 
 function checkAnswer(currentAnswer) {
-  return false;
   return Math.random() < 0.1;
 }
 

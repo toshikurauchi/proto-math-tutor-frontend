@@ -99,6 +99,12 @@ math-field::part(virtual-keyboard-toggle) {
   background: #6875c9;
 }
 
+.test-equation-btn:disabled, .test-equation-btn:disabled:hover, .test-equation-btn:disabled:active {
+  cursor: default;
+  color: #9b9da8;
+  background-color: #d2d3da;
+}
+
 .equation-feedback {
   color: #db4343;
   margin-bottom: 1.5em;

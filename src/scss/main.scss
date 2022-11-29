@@ -95,6 +95,8 @@ math-field {
 
 .test-equation-btn {
   $bg: #2f3a83;
+  $disabled-bg: #d2d3da;
+  $disabled-text: #9b9da8;
 
   border: none;
   border-radius: 0.5 * $border-radius;
@@ -111,6 +113,16 @@ math-field {
 
   &:active {
     background: lighten($bg, 25%);
+  }
+
+  &:disabled {
+    &,
+    &:hover,
+    &:active {
+      cursor: default;
+      background-color: $disabled-bg;
+      color: $disabled-text;
+    }
   }
 }
 
