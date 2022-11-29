@@ -7,10 +7,8 @@ theme:
 docs_dir: content
 site_dir: docs
 
-site_url: https://insper-education.github.io/active-handout/
-repo_name: "Active Handout"
-repo_url: https://github.com/insper-education/active-handout
-edit_uri: edit/main/content/
+site_url: https://insper-education.github.io/math-tutor/
+repo_name: "Math Tutor"
 
 extra_css:
   - css/mathlive-static.css

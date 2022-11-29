@@ -110,7 +110,8 @@ math-field::part(virtual-keyboard-toggle) {
   border: none;
   border-radius: .5rem;
   margin: auto;
-  padding: 2rem;
+  padding: 1rem 2rem;
+  position: relative;
 }
 
 .error-dialog::backdrop {
@@ -143,6 +144,23 @@ ul.error-list li ~ li:before {
 
 .error-list-feedback {
   color: #db4343;
+}
+
+.close-btn {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.dialog-title {
+  margin: 0 0 2rem;
+  font-weight: bold;
+  line-height: 1;
 }
 
 /*# sourceMappingURL=main.css.map */

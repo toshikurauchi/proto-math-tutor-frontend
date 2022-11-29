@@ -104,13 +104,19 @@ function addErrorDialog(parent) {
   const dialog = document.createElement("dialog");
   dialog.classList.add("error-dialog");
 
+  const title = document.createElement("p");
+  title.classList.add("dialog-title");
+  title.textContent = "Tentativas";
+  dialog.appendChild(title);
+
   const errorList = document.createElement("ul");
   errorList.classList.add("error-list");
   dialog.appendChild(errorList);
 
   const closeButton = document.createElement("button");
+  closeButton.classList.add("close-btn");
   closeButton.innerHTML =
-    '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+    '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
   closeButton.addEventListener("click", () => {
     dialog.close();
   });

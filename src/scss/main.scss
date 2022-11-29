@@ -121,10 +121,11 @@ math-field {
 }
 
 .error-dialog {
+  position: relative;
   border: none;
   border-radius: $border-radius;
   margin: auto;
-  padding: 2rem;
+  padding: 1rem 2rem;
   max-height: 90%;
 
   &::backdrop {
@@ -157,4 +158,21 @@ ul.error-list {
 
 .error-list-feedback {
   color: $clr-error;
+}
+
+.close-btn {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  border: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.dialog-title {
+  line-height: 1;
+  margin: 0 0 2rem;
+  font-weight: bold;
 }
