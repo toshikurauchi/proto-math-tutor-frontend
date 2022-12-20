@@ -3,6 +3,8 @@ $clr-error: hsl(0, 68%, 56%);
 
 :root {
   --equation-background: hsl(207, 71%, 93%);
+  --success-background: hsl(106, 58%, 87%);
+  --success-color: hsl(106, 73%, 59%);
 }
 
 #equation-history {
@@ -37,6 +39,57 @@ math-field {
   transition: all 0.2s;
 }
 
+.end-node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  min-width: 7rem;
+  padding: 1rem;
+  margin-top: -0.1rem;
+  border-radius: 50%;
+  aspect-ratio: 1;
+
+  font-size: 3rem;
+
+  background-color: var(--success-background);
+  color: var(--success-color);
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200%;
+    aspect-ratio: 1;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cline x1='8.5' x2='9.5' y1='5.0' y2='5.0' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='7.474873734152917' x2='8.181980515339465' y1='7.474873734152916' y2='8.181980515339465' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='5.0' x2='5.0' y1='8.5' y2='9.5' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='2.525126265847084' x2='1.8180194846605362' y1='7.474873734152917' y2='8.181980515339465' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='1.5' x2='0.5' y1='5.0' y2='5.000000000000001' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='2.525126265847083' x2='1.8180194846605353' y1='2.525126265847084' y2='1.8180194846605362' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3Cline x1='7.474873734152916' x2='8.181980515339465' y1='2.525126265847083' y2='1.8180194846605353' stroke='%23d4f1cb' stroke-width='0.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    animation: scale-up 0.5s;
+  }
+}
+
+@keyframes scale-up {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 .equation-link {
   display: flex;
   justify-content: space-between;
@@ -44,6 +97,13 @@ math-field {
   height: 2rem;
   width: 3.5 * $border-radius;
   background: var(--equation-background);
+
+  &.to-end {
+    background: linear-gradient(
+      var(--equation-background),
+      var(--success-background)
+    );
+  }
 
   &::before,
   &::after {
@@ -61,6 +121,19 @@ math-field {
   &::before {
     border-top-right-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
+  }
+}
+
+.hint-btn {
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  color: var(--clr-link);
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    color: var(--clr-link-hover);
   }
 }
 
@@ -91,6 +164,10 @@ math-field {
   &:active {
     background: lighten($bg, 25%);
   }
+}
+
+.hidden {
+  display: none;
 }
 
 .test-equation-btn {
@@ -132,12 +209,13 @@ math-field {
   color: $clr-error;
 }
 
-.error-dialog {
+.dialog {
   position: relative;
   border: none;
   border-radius: $border-radius;
   margin: auto;
   padding: 1rem 2rem;
+  min-width: min(20rem, 80%);
   max-height: 90%;
 
   &::backdrop {

@@ -1,13 +1,22 @@
-import { createEditableNode, createEquationNode } from "./equation-node";
+import { listExercises } from "./data/client";
+import { renderExercise, renderExercises } from "./ui/layouts";
+import { getIdFromURL } from "./data/query-string";
+import { findExerciseById } from "./data/exercise";
 
-function onLoad() {
-  const history = document.getElementById("equation-history");
-  createEquationNode(history, question);
-  createEditableNode(history, question);
+function initialize() {
+  const exerciseId = getIdFromURL();
+
+  const mainContainer = document.querySelector(".ah-content");
+  const container = mainContainer.querySelector("section");
+  mainContainer.appendChild(container);
+
+  listExercises().then((exercises) => {
+    if (exerciseId === null) {
+      renderExercises(container, exercises);
+    } else {
+      renderExercise(container, findExerciseById(exercises, exerciseId));
+    }
+  });
 }
 
-if (document.readyState !== "loading") {
-  onLoad();
-} else {
-  document.addEventListener("DOMContentLoaded", onLoad);
-}
+initialize();
