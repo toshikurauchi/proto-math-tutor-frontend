@@ -1,7 +1,7 @@
 const API_URL = "http://18.208.13.53/api/v0.1/math-tutor";
 
 export function listExercises() {
-  // Response: [ { id_exercise: 0, description: "" }]
+  // Response: [ { id_exercise: 0, description: "", equation: "" }]
   return getJSON(`${API_URL}/exercises/`, []);
 }
 

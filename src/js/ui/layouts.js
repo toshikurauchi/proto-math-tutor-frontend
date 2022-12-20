@@ -24,13 +24,13 @@ export function renderExercise(container, exercise) {
 
   createElement("h1", container, { text: "Exercícios" });
   createElement("p", container, {
-    text: "Simplifique a expressão abaixo:",
+    text: exercise.description,
   });
   const historyContainer = createElement("div", container, {
     id: "equation-history",
   });
 
-  const question = exercise.description;
+  const question = exercise.equation;
   createEquationNode(historyContainer, 0, question);
   createEditableNode(historyContainer, 0, question);
 }
